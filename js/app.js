@@ -18,7 +18,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 600){
       this.x = -100;
     }
-
+// sets collision on objects
     if (player.x < this.x + 38 && player.x +38 > this.x && player.y === this.y -10){
       player.x = 202;
       player.y = 383;
