@@ -22,6 +22,16 @@ Enemy.prototype.update = function(dt) {
     if (player.x < this.x + 38 && player.x +38 > this.x && player.y === this.y -10){
       player.x = 202;
       player.y = 383;
+      //set lives when colliding
+      player.lives -= 1;
+      //set the points logic
+      player.score === 0 ? player.score = 0 : player.score -= 50
+    }
+    //displaying the score when game is over and reset it
+    if (player.lives === 0){
+      alert (`Game Over, You'r score is ${player.score}`)
+      player.lives = 3;
+      player.score = 0;
     }
 };
 
@@ -64,9 +74,9 @@ Player.prototype.handleInput = function(key) {
 };
 
 Player.prototype.update = function(){
-
-
+  scoreBoard.innerHTML = `<span style = color:red>Lives: ${player.lives} </span> \\\\\b <span style = color:green>Score: ${player.score} </span>`;
 };
+
 
 Player.prototype.render = function(x,y) {
   ctx.drawImage(Resources.get(this.sprite),this.x,this.y);
@@ -74,6 +84,7 @@ Player.prototype.render = function(x,y) {
   if (this.y === -32) {
       this.x = 202;
       this.y = 383;
+      player.score += 50
   }
 };
 
@@ -82,6 +93,8 @@ Player.prototype.render = function(x,y) {
 // Place the player object in a variable called player
 var player = new Player(202,383);
 var allEnemies = [];
+var scoreBoard = document.createElement('h1');
+document.body.appendChild(scoreBoard);
 
 //create enemies on the map
 (function(){
