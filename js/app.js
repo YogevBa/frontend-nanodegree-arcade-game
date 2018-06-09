@@ -14,24 +14,40 @@ var Enemy = function(x,y,speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    this.x += dt*this.speed;
+    this.x += this.speed*dt;
     if (this.x > 600){
       this.x = -100;
+      this.speed = random(1,3)*60;
     }
 // sets collision on objects
-    if (player.x < this.x + 38 && player.x +38 > this.x && player.y === this.y -10){
-      player.x = 202;
-      player.y = 383;
+    if (player.x < this.x + 55 && player.x + 55 > this.x && player.y === this.y - 10){
+        player.x = 202;
+        player.y = 383;
       //set lives when colliding
       player.lives -= 1;
       //set the points logic
-      player.score === 0 ? player.score = 0 : player.score -= 50
+      player.totalScore === 0 ? player.totalScore = 0 : player.totalScore -= 40
     }
+
+    if (player.totalScore >= 120 && player.totalScore <= 240){
+      this.speed *= 1.01;
+    }
+    else if(player.totalScore >= 240 && player.totalScore <= 320){
+      this.speed *= 1.02;
+    }
+    else if(player.totalScore >= 320){
+      this.speed *= 1.04;
+    }
+
+
+
+
+
     //displaying the score when game is over and reset it
     if (player.lives === 0){
-      alert (`Game Over, You'r score is ${player.score}`)
+      alert (`Game Over, You'r score is ${player.totalScore}`)
       player.lives = 3;
-      player.score = 0;
+      player.totalScore = 0;
     }
 };
 
@@ -41,18 +57,17 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x , this.y);
 };
 
-
-
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(x,y) {
   this.sprite = 'images/char-boy.png';
   //starting player position
-  this.x = x;
-  this.y = y;
+  this.x = 202;
+  this.y = 383;
   this.lives = 3;
-  this.score = 0;
+  this.score = 40;
+  this.totalScore = 0;
 };
 
 Player.prototype.handleInput = function(key) {
@@ -74,7 +89,7 @@ Player.prototype.handleInput = function(key) {
 };
 
 Player.prototype.update = function(){
-  scoreBoard.innerHTML = `<span style = color:red>Lives: ${player.lives} </span> \\\\\b <span style = color:green>Score: ${player.score} </span>`;
+  scoreBoard.innerHTML = `<span style = color:red>Lives: ${player.lives} </span> \\\\\b <span style = color:green>Score: ${player.totalScore} </span>`;
 };
 
 
@@ -84,26 +99,30 @@ Player.prototype.render = function(x,y) {
   if (this.y === -32) {
       this.x = 202;
       this.y = 383;
-      player.score += 50
+      player.totalScore += player.score;
   }
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var player = new Player(202,383);
+var player = new Player();
 var allEnemies = [];
 var scoreBoard = document.createElement('h1');
 document.body.appendChild(scoreBoard);
 
-//create enemies on the map
-(function(){
-  var position = -22;
-      //set enemy's position and speed
-  for (var x = 0; x<3; x++){
-    var newEnemy = new Enemy(0 , position +=83 , (Math.random() * (3-1) + 1) * 70)
-    allEnemies.push(newEnemy)
-    };
+// generate random number function
+function random(min, max){
+	return Math.floor(Math.random() * (max - min) + min);
+};
+
+//create enemies
+(function() {
+    var position = -22;
+    for (var x = 0; x < 3; x++) {
+        var newEnemy = new Enemy(0, position += 83, random(1,3) * 60);
+        allEnemies.push(newEnemy);
+    }
 })();
 
 
