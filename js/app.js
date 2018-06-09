@@ -19,7 +19,7 @@ Enemy.prototype.update = function(dt) {
       this.x = -100;
       this.speed = random(1,3)*60;
     }
-// sets collision on objects
+    //sets collision on objects
     if (player.x < this.x + 55 && player.x + 55 > this.x && player.y === this.y - 10){
         player.x = 202;
         player.y = 383;
@@ -28,7 +28,7 @@ Enemy.prototype.update = function(dt) {
       //set the points logic
       player.totalScore === 0 ? player.totalScore = 0 : player.totalScore -= 40
     }
-
+    //enemy's difficulty increased based on the totalScore
     if (player.totalScore >= 120 && player.totalScore <= 240){
       this.speed *= 1.01;
     }
@@ -38,10 +38,6 @@ Enemy.prototype.update = function(dt) {
     else if(player.totalScore >= 320){
       this.speed *= 1.04;
     }
-
-
-
-
 
     //displaying the score when game is over and reset it
     if (player.lives === 0){
