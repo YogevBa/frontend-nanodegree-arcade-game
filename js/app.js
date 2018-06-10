@@ -41,17 +41,36 @@ Enemy.prototype.update = function(dt) {
 
     //displaying the score when game is over and reset it
     if (player.lives === 0){
-      alert (`Game Over, You'r score is ${player.totalScore}`)
+      alert (`Game Over, You'r score is ${player.totalScore}`);
       player.lives = 3;
       player.totalScore = 0;
+      bonusStars();
     }
 };
 
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x , this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x , this.y);
 };
+
+var Star = function(x,y){
+  this.sprite = 'images/Star.png'
+  this.x = x
+  this.y = y
+}
+
+Star.prototype.render = function(){
+  ctx.drawImage(Resources.get(this.sprite), this.x , this.y);
+}
+
+Star.prototype.update = function(){
+  if (player.y < this.y +25 && player.x < this.x + 25 && player.x + 25 > this.x && player.y + 25 > this.y){
+    player.totalScore += 80;
+    allStars.pop(this);
+  }
+}
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -59,8 +78,8 @@ Enemy.prototype.render = function() {
 var Player = function(x,y) {
   this.sprite = 'images/char-boy.png';
   //starting player position
-  this.x = 202;
-  this.y = 383;
+  this.x = x;
+  this.y = y;
   this.lives = 3;
   this.score = 40;
   this.totalScore = 0;
@@ -95,22 +114,27 @@ Player.prototype.render = function(x,y) {
   if (this.y === -32) {
       this.x = 202;
       this.y = 383;
-      player.totalScore += player.score;
+      this.totalScore += this.score;
+      allStars.pop();
+      bonusStars();
   }
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var player = new Player();
+var player = new Player(202,383);
 var allEnemies = [];
+var allStars = [];
+var starPointX = [2,102,202,302,402];
+var starPointY = [70,150,230];
 var scoreBoard = document.createElement('h1');
 document.body.appendChild(scoreBoard);
 
-// generate random number function
+// generate random number
 function random(min, max){
 	return Math.floor(Math.random() * (max - min) + min);
-};
+}
 
 //create enemies
 (function() {
@@ -121,6 +145,11 @@ function random(min, max){
     }
 })();
 
+//creaete bonus stars
+function bonusStars(){
+    var star = new Star(starPointX[Math.floor(Math.random() * starPointX.length)],starPointY[Math.floor(Math.random() * starPointY.length)]);
+    allStars.push(star);
+};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

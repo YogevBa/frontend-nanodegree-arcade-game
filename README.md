@@ -5,6 +5,11 @@ Students should use this [rubric](https://review.udacity.com/#!/projects/2696458
 
 For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
 
-Arcade-Game
+Arcade-Game:
+go to https://github.com/YogevBa/frontend-nanodegree-arcade-game to download the game.
+click on the "clone or download" green button to either download the game files or copy the repository by choosing the clone.
+double click the index.html file to load the game in the browser enjoy (-:.
+Game-Instructions:
 try to pass the character to the water side without colliding into the enemies.
 you can use the arrow keys to move left right up or down.
+the more points you gain the faster the enemies will move.
