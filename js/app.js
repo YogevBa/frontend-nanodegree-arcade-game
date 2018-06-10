@@ -44,6 +44,7 @@ Enemy.prototype.update = function(dt) {
       alert (`Game Over, You'r score is ${player.totalScore}`);
       player.lives = 3;
       player.totalScore = 0;
+      allStars.pop();
       bonusStars();
     }
 };
@@ -138,6 +139,7 @@ function random(min, max){
 
 //create enemies
 (function() {
+  bonusStars();
     var position = -22;
     for (var x = 0; x < 3; x++) {
         var newEnemy = new Enemy(0, position += 83, random(1,3) * 60);
